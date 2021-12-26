@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from "vue";
+import { reactive, ref } from "vue";
 import { Edit } from "@element-plus/icons-vue";
 
 const test = reactive({
