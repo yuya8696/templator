@@ -3,7 +3,7 @@ import App from "./App.vue";
 
 // routerとstore
 import router from "./router";
-// import store from "./store";
+import store from "./store";
 
 // Element-plus install
 import ElementPlus from "element-plus";
@@ -13,5 +13,5 @@ const app = createApp(App);
 
 app.use(ElementPlus);
 app.use(router);
-// app.use(store);
+app.use(store);
 app.mount("#app");

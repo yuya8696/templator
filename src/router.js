@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import top from "./pages/top.vue";
 import create from "./pages/create.vue";
+import edit from "./pages/edit.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,6 +16,11 @@ const router = createRouter({
       path: "/create",
       name: "create",
       component: create,
+    },
+    {
+      path: "/edit",
+      name: "edit",
+      component: edit,
     },
   ],
 });

@@ -1,6 +1,6 @@
 <template>
   <section class="create">
-    <h2 class="create__title">create new template</h2>
+    <h2 class="create__title">edit template</h2>
 
     <el-card class="create__card">
       <template #header>
@@ -68,19 +68,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-
-        <!-- <el-input v-model="item.option"> </el-input>
-        </el-form-item>
-        <el-button
-          v-for="(i, index) in item.option"
-          :key="index"
-          round
-          disabled
-          >{{ i.option }}</el-button
-        > -->
-        <!-- <el-button type="primary" plain @click="onClickAddingForm">
-          追加
-        </el-button> -->
       </el-form>
 
       <div class="create__card--button">
@@ -95,9 +82,9 @@
         <el-button
           class="create__card--button--create-template"
           type="primary"
-          @click="onClickCreatingTemplate"
+          @click="onClickUpdateTemplate"
         >
-          テンプレート生成
+          テンプレート更新
         </el-button>
       </div>
     </el-card>
@@ -111,7 +98,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { computed } from "vue";
 
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -119,19 +106,7 @@ import { useStore } from "vuex";
 const router = useRouter();
 const store = useStore();
 
-const form = reactive({
-  name: {
-    templateName: "",
-  },
-  contents: [
-    {
-      label: "",
-      type: "",
-      value: "",
-      options: [],
-    },
-  ],
-});
+const form = store.state.template[0];
 
 const onClickAddingForm = () => {
   const additionalContents = {
@@ -142,8 +117,9 @@ const onClickAddingForm = () => {
   form.contents.push(additionalContents);
 };
 
-const onClickCreatingTemplate = () => {
-  store.dispatch("createTemplate", form);
+const onClickUpdateTemplate = () => {
+  const updateItem = { index: 0, form: form };
+  store.dispatch("updateTemplate", updateItem);
   router.push("/");
 };
 </script>
