@@ -82,7 +82,7 @@
         <el-button
           class="create__card--button--create-template"
           type="primary"
-          @click="onClickCreatingTemplate"
+          @click="onClickCreateTemplate"
         >
           テンプレート生成
         </el-button>
@@ -97,84 +97,24 @@
 
     <!-- 確認ダイアログ -->
     <el-dialog
-      v-model="isClickedCreatingTemplate"
+      v-model="isClickedCreateTemplate"
       title="テンプレート作成"
       width="72%"
       center
     >
       <span>この内容でテンプレートを作成します。よろしいですか？</span>
 
-      <el-card class="create__card">
-        <template #header>
-          <div class="create__card__header">
+      <inputCard v-model:form="form" :disabled="true" class="create__card">
+        <template v-slot:header>
+          <div>
             <span> {{ form.name.templateName }} </span>
           </div>
         </template>
-        <div class="create__card__contents--dialog">
-          <el-form
-            v-for="(item, index) in form.contents"
-            :key="index"
-            label-width="120px"
-          >
-            <h3
-              v-if="item.type === 'heading'"
-              class="create__card__contents--dialog__title1"
-            >
-              {{ item.label }}
-            </h3>
-            <el-form-item
-              v-else
-              :label="item.label"
-              class="create__card__contents--dialog__form-item"
-            >
-              <el-date-picker
-                disabled
-                v-if="item.type === 'date'"
-                :default-value="new Date()"
-                placeholder="Pick a date"
-                type="date"
-                v-model="item.value"
-              >
-              </el-date-picker>
-              <el-rate
-                disabled
-                v-else-if="item.type === 'rate'"
-                v-model="item.value"
-                allow-half
-              ></el-rate>
-              <el-select
-                disabled
-                v-else-if="item.type === 'select'"
-                v-model="item.value"
-                multiple
-                filterable
-                allow-create
-                fit-input-width
-                placeholder="選択肢を入力してください"
-                class="create__card__contents--dialog__form-item__select"
-              >
-                <el-option
-                  v-for="item in item.options"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
-              <el-input
-                v-else
-                disabled
-                :type="item.type"
-                v-model="item.value"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-card>
+      </inputCard>
 
       <template #footer>
         <span>
-          <el-button @click="isClickedCreatingTemplate = false"
+          <el-button @click="isClickedCreateTemplate = false"
             >キャンセル</el-button
           >
           <el-button type="primary" @click="onClickConfirm"
@@ -191,6 +131,8 @@ import { reactive, ref } from "vue";
 
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+
+import inputCard from "../components/inputCard.vue";
 
 const router = useRouter();
 const store = useStore();
@@ -209,7 +151,7 @@ const form = reactive({
   ],
 });
 
-const isClickedCreatingTemplate = ref(false);
+const isClickedCreateTemplate = ref(false);
 
 const onClickAddingForm = () => {
   const additionalContents = {
@@ -220,12 +162,12 @@ const onClickAddingForm = () => {
   form.contents.push(additionalContents);
 };
 
-const onClickCreatingTemplate = () => {
-  isClickedCreatingTemplate.value = true;
+const onClickCreateTemplate = () => {
+  isClickedCreateTemplate.value = true;
 };
 
 const onClickConfirm = () => {
-  isClickedCreatingTemplate.value = false;
+  isClickedCreateTemplate.value = false;
   store.dispatch("createTemplate", form);
   router.push("/");
 };
@@ -263,19 +205,6 @@ const onClickConfirm = () => {
           &__select-box {
             width: 100%;
           }
-        }
-      }
-    }
-    &__contents--dialog {
-      &__title1 {
-        text-align: left;
-      }
-      &__form-item {
-        text-align: left;
-        align-items: center;
-
-        &__select {
-          width: 100%;
         }
       }
     }

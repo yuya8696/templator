@@ -85,6 +85,35 @@
       </div>
     </el-card>
 
+    <!-- 確認ダイアログ -->
+    <el-dialog
+      v-model="isClickedUpdateTemplate"
+      title="テンプレート更新"
+      width="72%"
+      center
+    >
+      <span>この内容でテンプレートを更新します。よろしいですか？</span>
+
+      <inputCard v-model:form="form" :disabled="true" class="edit__card">
+        <template v-slot:header>
+          <div>
+            <span> {{ form.name.templateName }} </span>
+          </div>
+        </template>
+      </inputCard>
+
+      <template #footer>
+        <span>
+          <el-button @click="isClickedUpdateTemplate = false"
+            >キャンセル</el-button
+          >
+          <el-button type="primary" @click="onClickConfirm"
+            >テンプレート更新</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
+
     <div class="edit__back-button">
       <router-link to="/">
         <el-button type="info"> 戻る </el-button>
@@ -94,17 +123,22 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref } from "vue";
 
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
+
+import inputCard from "../components/inputCard.vue";
 
 const router = useRouter();
 const route = useRoute();
 const store = useStore();
 
+const isClickedUpdateTemplate = ref(false);
+
 const { id } = route.params;
 
+// 更新可能にするため computed は使わない
 const form = store.state.template[id];
 
 const onClickAddingForm = () => {
@@ -117,6 +151,11 @@ const onClickAddingForm = () => {
 };
 
 const onClickUpdateTemplate = () => {
+  isClickedUpdateTemplate.value = true;
+};
+
+const onClickConfirm = () => {
+  isClickedUpdateTemplate.value = false;
   const updateItem = { index: id, form: form };
   store.dispatch("updateTemplate", updateItem);
   router.push("/");

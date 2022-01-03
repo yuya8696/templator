@@ -28,5 +28,8 @@ body {
   &__main {
     margin: 0 20%;
   }
+  &__footer {
+    height: 4vh;
+  }
 }
 </style>

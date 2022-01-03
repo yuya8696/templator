@@ -7,12 +7,14 @@
     </div>
 
     <!-- 入力：登録されたテンプレート -->
-    <el-card
+    <inputCard
+      class="top__card"
       v-for="(template, index) in storeTemplate"
       :key="index"
-      class="top__card"
+      :form="template"
+      @update:form="template = $event"
     >
-      <template #header>
+      <template v-slot:header>
         <div class="top__card__header">
           <span> {{ template.name.templateName }} </span>
           <div>
@@ -42,58 +44,11 @@
           </div>
         </div>
       </template>
-      <div class="top__card__content">
-        <el-form
-          v-for="(item, index) in template.contents"
-          :key="index"
-          label-width="120px"
-        >
-          <h3 v-if="item.type === 'heading'" class="top__card__content__title1">
-            {{ item.label }}
-          </h3>
-          <el-form-item
-            v-else
-            :label="item.label"
-            class="top__card__content__form-item"
-          >
-            <el-date-picker
-              v-if="item.type === 'date'"
-              :default-value="new Date()"
-              placeholder="Pick a date"
-              type="date"
-              v-model="item.value"
-            >
-            </el-date-picker>
-            <el-rate
-              v-else-if="item.type === 'rate'"
-              v-model="item.value"
-              allow-half
-            ></el-rate>
-            <el-select
-              v-else-if="item.type === 'select'"
-              v-model="item.value"
-              multiple
-              filterable
-              allow-create
-              fit-input-width
-              placeholder="選択肢を入力してください"
-              class="top__card__content__form-item__select"
-            >
-              <el-option
-                v-for="item in item.options"
-                :key="item"
-                :label="item"
-                :value="item"
-              >
-              </el-option>
-            </el-select>
-            <el-input v-else :type="item.type" v-model="item.value"></el-input>
-          </el-form-item>
-        </el-form>
+      <template v-slot:contents>
         <el-button @click="onClearForm(template)">クリア</el-button>
         <el-button type="primary" @click="onSubmit(template)">作成</el-button>
-      </div>
-    </el-card>
+      </template>
+    </inputCard>
 
     <!-- 出力 -->
     <el-dialog
@@ -132,22 +87,7 @@ import { InfoFilled } from "@element-plus/icons-vue";
 
 import { useStore } from "vuex";
 
-const test = reactive({
-  shop: {
-    label: "ショップ",
-    value: "",
-  },
-  ramen: {
-    label: "ラーメン",
-    value: "",
-  },
-  rate: {
-    label: "レビュー",
-    value: null,
-  },
-});
-
-const inputs = reactive({});
+import inputCard from "../components/inputCard.vue";
 
 const dialogVisible = ref(false);
 
@@ -163,6 +103,7 @@ const deleteTemplate = (index) => {
 };
 
 const onSubmit = (template) => {
+  dialogTextarea.value = "";
   dialogName.value = template.name.templateName;
   for (let item of template.contents) {
     if (item.type === "heading") {
@@ -211,19 +152,6 @@ const onCopy = () => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    &__content {
-      &__title1 {
-        text-align: left;
-      }
-      &__form-item {
-        text-align: left;
-        align-items: center;
-
-        &__select {
-          width: 100%;
-        }
-      }
     }
   }
 
