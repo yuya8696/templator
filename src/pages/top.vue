@@ -48,13 +48,13 @@
           :key="index"
           label-width="120px"
         >
-          <h3 v-if="item.type === 'heading'" class="top__card__content--title1">
+          <h3 v-if="item.type === 'heading'" class="top__card__content__title1">
             {{ item.label }}
           </h3>
           <el-form-item
             v-else
             :label="item.label"
-            class="top__card__content--form-item"
+            class="top__card__content__form-item"
           >
             <el-date-picker
               v-if="item.type === 'date'"
@@ -77,7 +77,7 @@
               allow-create
               fit-input-width
               placeholder="選択肢を入力してください"
-              class="top__card__content--form-item--select"
+              class="top__card__content__form-item__select"
             >
               <el-option
                 v-for="item in item.options"
@@ -90,15 +90,15 @@
             <el-input v-else :type="item.type" v-model="item.value"></el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" @click="onSubmit(template)">Create</el-button>
-        <el-button @click="onClearForm(template)">Clear</el-button>
+        <el-button @click="onClearForm(template)">クリア</el-button>
+        <el-button type="primary" @click="onSubmit(template)">作成</el-button>
       </div>
     </el-card>
 
     <!-- 出力 -->
     <el-dialog
       v-model="dialogVisible"
-      title="テストテンプレート"
+      :title="dialogName"
       width="75%"
       class="top__output"
       show-close
@@ -106,7 +106,7 @@
     >
       <div class="top__output__content">
         <el-input
-          v-model="textarea"
+          v-model="dialogTextarea"
           autosize
           type="textarea"
           placeholder="Please input"
@@ -115,8 +115,8 @@
       </div>
       <template #footer>
         <span>
-          <el-button @click="dialogVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="onCopy">Copy</el-button>
+          <el-button @click="dialogVisible = false">キャンセル</el-button>
+          <el-button type="primary" @click="onCopy">コピー</el-button>
         </span>
       </template>
     </el-dialog>
@@ -151,7 +151,8 @@ const inputs = reactive({});
 
 const dialogVisible = ref(false);
 
-const textarea = ref("");
+const dialogName = ref("");
+const dialogTextarea = ref("");
 
 const store = useStore();
 
@@ -162,18 +163,18 @@ const deleteTemplate = (index) => {
 };
 
 const onSubmit = (template) => {
-  textarea.value = `# ${template.name.templateName} \n`;
+  dialogName.value = template.name.templateName;
   for (let item of template.contents) {
     if (item.type === "heading") {
-      textarea.value += `## ${item.label} \n`;
+      dialogTextarea.value += `# ${item.label} \n`;
     } else if (item.type === "textarea") {
       // テキスト内で改行がある場合は、スペース2つと改行コードに変換
-      textarea.value += `- ${item.label}：  \n${item.value.replace(
+      dialogTextarea.value += `- ${item.label}：  \n${item.value.replace(
         /\n/g,
         "  \n"
       )} \n`;
     } else {
-      textarea.value += `- ${item.label}：${item.value} \n`;
+      dialogTextarea.value += `- ${item.label}：${item.value} \n`;
     }
   }
   // textarea.value += `# ${template.name.templateName} \n`;
@@ -212,14 +213,14 @@ const onCopy = () => {
       align-items: center;
     }
     &__content {
-      &--title1 {
+      &__title1 {
         text-align: left;
       }
-      &--form-item {
+      &__form-item {
         text-align: left;
         align-items: center;
 
-        &--select {
+        &__select {
           width: 100%;
         }
       }
