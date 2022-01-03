@@ -21,6 +21,8 @@
             :disabled="disabled"
             v-if="item.type === 'date'"
             :default-value="new Date()"
+            format="YYYY/MM/DD"
+            value-format="YYYY/MM/DD"
             placeholder="日付を選択してください"
             type="date"
             v-model="item.value"
@@ -65,8 +67,6 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
-
 const props = defineProps({
   form: {},
   disabled: false,
