@@ -7,8 +7,6 @@
       </router-link>
     </div>
 
-    {{ storeTemplate }}
-
     <!-- 入力：登録されたテンプレート -->
     <el-card
       v-for="(template, index) in storeTemplate"
@@ -19,16 +17,29 @@
         <div class="top__card__header">
           <span> {{ template.name.templateName }} </span>
           <div>
+            <!-- 更新ボタン -->
             <router-link :to="'/edit/' + index">
               <el-button type="primary" plain circle :icon="Edit"></el-button>
             </router-link>
-            <el-button
-              type="danger"
-              plain
-              :icon="Delete"
-              circle
-              @click="deleteTemplate(index)"
-            ></el-button>
+
+            <!-- 削除ボタン -->
+            <el-popconfirm
+              confirm-button-text="消去します"
+              cancel-button-text="キャンセル"
+              :icon="InfoFilled"
+              icon-color="red"
+              title="このテンプレートを消去しますか？"
+              @confirm="deleteTemplate(index)"
+            >
+              <template #reference>
+                <el-button
+                  type="danger"
+                  plain
+                  :icon="Delete"
+                  circle
+                ></el-button>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
       </template>
@@ -118,6 +129,7 @@ import { reactive, ref, computed } from "vue";
 
 import { Edit } from "@element-plus/icons-vue";
 import { Delete } from "@element-plus/icons-vue";
+import { InfoFilled } from "@element-plus/icons-vue";
 
 import { useStore } from "vuex";
 
