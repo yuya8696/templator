@@ -1,6 +1,6 @@
 <template>
   <section class="create">
-    <h2 class="create__title">create new template</h2>
+    <h3 class="create__title">テンプレート作成</h3>
 
     <el-card class="create__card">
       <template #header>
@@ -68,19 +68,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-
-        <!-- <el-input v-model="item.option"> </el-input>
-        </el-form-item>
-        <el-button
-          v-for="(i, index) in item.option"
-          :key="index"
-          round
-          disabled
-          >{{ i.option }}</el-button
-        > -->
-        <!-- <el-button type="primary" plain @click="onClickAddingForm">
-          追加
-        </el-button> -->
       </el-form>
 
       <div class="create__card--button">

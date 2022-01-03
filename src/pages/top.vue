@@ -1,6 +1,5 @@
 <template>
   <section class="top">
-    <h2 class="top__title">Templator</h2>
     <div class="top__edit">
       <router-link to="/create">
         <el-button type="primary">新規テンプレート</el-button>

@@ -1,15 +1,15 @@
 <template>
-  <section class="create">
-    <h2 class="create__title">edit template</h2>
+  <section class="edit">
+    <h3 class="edit__title">テンプレート更新</h3>
 
-    <el-card class="create__card">
+    <el-card class="edit__card">
       <template #header>
-        <el-form label-position="top" class="create__card--header">
+        <el-form label-position="top" class="edit__card--header">
           <el-form-item label="テンプレート名">
             <el-input
               v-model="form.name.templateName"
               placeholder="テンプレート名"
-              class="create__card--header__input"
+              class="edit__card--header__input"
             ></el-input>
           </el-form-item>
         </el-form>
@@ -20,21 +20,17 @@
         v-for="(item, index) in form.contents"
         :key="index"
         label-position="top"
-        class="create__card--contents"
+        class="edit__card--contents"
       >
         <el-form-item
           :label="'項目' + (index + 1)"
-          class="
-            create__card--contents__item create__card--contents__item--label
-          "
+          class="edit__card--contents__item edit__card--contents__item--label"
         >
           <el-input v-model="item.label"> </el-input>
         </el-form-item>
         <el-form-item
           :label="'項目' + (index + 1) + 'のタイプ'"
-          class="
-            create__card--contents__item create__card--contents__item--type
-          "
+          class="edit__card--contents__item edit__card--contents__item--type"
         >
           <el-select v-model="item.type" placeholder="項目のタイプ">
             <el-option label="見出し" value="heading"></el-option>
@@ -48,7 +44,7 @@
         <el-form-item
           v-if="item.type === 'select'"
           label="選択肢の追加"
-          class="create__card--contents__item--options"
+          class="edit__card--contents__item--options"
         >
           <el-select
             v-model="item.options"
@@ -57,7 +53,7 @@
             allow-create
             fit-input-width
             placeholder="選択肢を入力してください"
-            class="create__card--contents__item--options__select-box"
+            class="edit__card--contents__item--options__select-box"
           >
             <el-option
               v-for="item in item.options"
@@ -70,9 +66,9 @@
         </el-form-item>
       </el-form>
 
-      <div class="create__card--button">
+      <div class="edit__card--button">
         <el-button
-          class="create__card--button--add-form"
+          class="edit__card--button--add-form"
           type="primary"
           plain
           @click="onClickAddingForm"
@@ -80,7 +76,7 @@
           質問の追加
         </el-button>
         <el-button
-          class="create__card--button--create-template"
+          class="edit__card--button--edit-template"
           type="primary"
           @click="onClickUpdateTemplate"
         >
@@ -89,7 +85,7 @@
       </div>
     </el-card>
 
-    <div class="create__back-button">
+    <div class="edit__back-button">
       <router-link to="/">
         <el-button type="info"> 戻る </el-button>
       </router-link>
@@ -128,7 +124,7 @@ const onClickUpdateTemplate = () => {
 </script>
 
 <style lang="scss" scoped>
-.create {
+.edit {
   text-align: center;
 
   &__card {
@@ -173,7 +169,7 @@ const onClickUpdateTemplate = () => {
       &--add-form {
         align-items: center;
       }
-      &--create-template {
+      &--edit-template {
         align-items: center;
       }
     }

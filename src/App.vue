@@ -1,14 +1,32 @@
 <template>
-  <router-view />
+  <header class="app__header">
+    <el-affix>
+      <h2 class="app__header__title">Templator</h2>
+    </el-affix>
+  </header>
+  <main class="app__main">
+    <router-view />
+  </main>
+  <footer class="app__footer"></footer>
 </template>
 
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-</script>
+<script setup></script>
 
-<style>
-#app {
-  margin: 0 20%;
+<style lang="scss">
+body {
+  margin: 0;
+}
+.app {
+  &__header {
+    height: 4vh;
+    text-align: center;
+    &__title {
+      background-color: #ffffff;
+      margin: 0;
+    }
+  }
+  &__main {
+    margin: 0 20%;
+  }
 }
 </style>
