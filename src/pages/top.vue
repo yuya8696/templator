@@ -19,7 +19,7 @@
         <div class="top__card__header">
           <span> {{ template.name.templateName }} </span>
           <div>
-            <router-link to="/edit">
+            <router-link :to="'/edit/' + index">
               <el-button type="primary" plain circle :icon="Edit"></el-button>
             </router-link>
             <el-button

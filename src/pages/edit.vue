@@ -100,13 +100,16 @@
 <script setup>
 import { computed } from "vue";
 
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const router = useRouter();
+const route = useRoute();
 const store = useStore();
 
-const form = store.state.template[0];
+const { id } = route.params;
+
+const form = store.state.template[id];
 
 const onClickAddingForm = () => {
   const additionalContents = {
@@ -118,7 +121,7 @@ const onClickAddingForm = () => {
 };
 
 const onClickUpdateTemplate = () => {
-  const updateItem = { index: 0, form: form };
+  const updateItem = { index: id, form: form };
   store.dispatch("updateTemplate", updateItem);
   router.push("/");
 };
