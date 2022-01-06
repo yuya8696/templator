@@ -1,5 +1,8 @@
 import { createStore } from "vuex";
 
+// ローカルストレージへの保存
+import createPersistedState from "vuex-persistedstate";
+
 import { reactive } from "vue";
 
 const state = reactive({
@@ -44,7 +47,7 @@ const state = reactive({
         {
           label: "レビュー",
           type: "rate",
-          value: "4.5",
+          value: 4.5,
         },
         {
           label: "所感",
@@ -93,4 +96,5 @@ export default createStore({
   state,
   actions,
   mutations,
+  plugins: [createPersistedState()],
 });

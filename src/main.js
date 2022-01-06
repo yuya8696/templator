@@ -1,8 +1,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 
-// routerとstore
+// router
 import router from "./router";
+
+// store
 import store from "./store";
 
 // Element-plus install
