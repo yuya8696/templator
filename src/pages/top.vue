@@ -7,7 +7,7 @@
     </div>
 
     <!-- 入力：登録されたテンプレート -->
-    <inputCard
+    <input-card
       class="top__card"
       v-for="(template, index) in storeTemplate"
       :key="index"
@@ -48,14 +48,14 @@
         <el-button @click="onClearForm(template)">クリア</el-button>
         <el-button type="primary" @click="onSubmit(template)">作成</el-button>
       </template>
-    </inputCard>
+    </input-card>
 
     <!-- 出力 -->
     <el-dialog
       v-model="dialogVisible"
       :title="dialogName"
       width="75%"
-      class="top__output"
+      custom-class="top__output"
       show-close
       center
     >
@@ -79,7 +79,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from "vue";
+import { ref, computed } from "vue";
 
 import { Edit } from "@element-plus/icons-vue";
 import { Delete } from "@element-plus/icons-vue";
@@ -96,7 +96,7 @@ const dialogTextarea = ref("");
 
 const store = useStore();
 
-const storeTemplate = computed(() => store.state.template);
+const storeTemplate = computed(() => store.state.template.reverse());
 
 const deleteTemplate = (index) => {
   store.dispatch("deleteTemplate", index);
@@ -130,7 +130,7 @@ const onClearForm = (template) => {
 
 const onCopy = () => {
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(textarea.value);
+    navigator.clipboard.writeText(dialogTextarea.value);
   }
 };
 </script>

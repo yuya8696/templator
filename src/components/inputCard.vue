@@ -7,7 +7,8 @@
       <el-form
         v-for="(item, index) in form.contents"
         :key="index"
-        label-width="120px"
+        label-width="180px"
+        label-position="left"
       >
         <h3 v-if="item.type === 'heading'" class="input-card__contents__title1">
           {{ item.label }}
