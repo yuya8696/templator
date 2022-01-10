@@ -1,22 +1,25 @@
 <template>
-  <el-card class="input-card">
+  <el-card class="card-component">
     <template #header>
       <slot name="header"></slot>
     </template>
-    <div class="input-card__contents">
+    <div class="card-component__contents">
       <el-form
         v-for="(item, index) in form.contents"
         :key="index"
         label-width="180px"
-        label-position="left"
+        :label-position="labelPosition"
       >
-        <h3 v-if="item.type === 'heading'" class="input-card__contents__title1">
+        <h3
+          v-if="item.type === 'heading'"
+          class="card-component__contents__title1"
+        >
           {{ item.label }}
         </h3>
         <el-form-item
           v-else
           :label="item.label"
-          class="input-card__contents__form-item"
+          class="card-component__contents__form-item"
         >
           <el-date-picker
             :disabled="disabled"
@@ -44,7 +47,7 @@
             allow-create
             fit-input-width
             placeholder="選択肢を入力してください"
-            class="input-card__contents__form-item__select"
+            class="card-component__contents__form-item__select"
           >
             <el-option
               v-for="item in item.options"
@@ -68,14 +71,24 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
+
 const props = defineProps({
   form: {},
   disabled: false,
 });
+
+const labelPosition = ref("left");
+
+onMounted(() => {
+  if (window.matchMedia("(max-width: 480px)").matches) {
+    labelPosition.value = "top";
+  }
+});
 </script>
 
-<style lang="scss">
-.input-card {
+<style lang="scss" scoped>
+.card-component {
   &__header {
     width: 100%;
   }

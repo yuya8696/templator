@@ -55,30 +55,20 @@
             placeholder="選択肢を入力してください"
             class="edit__card__contents__item__options__select-box"
           >
-            <el-option
-              v-for="item in item.options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
+            <template #empty></template>
           </el-select>
         </el-form-item>
       </el-form>
 
       <div class="edit__card__button">
-        <el-button
-          class="edit__card__button--add-form"
-          type="primary"
-          plain
-          @click="onClickAddingForm"
-        >
+        <el-button class="edit__card__button--add-form" @click="onClickAdd">
           質問の追加
         </el-button>
         <el-button
           class="edit__card__button--edit-template"
           type="primary"
-          @click="onClickUpdateTemplate"
+          plain
+          @click="onClickUpdate"
         >
           テンプレート更新
         </el-button>
@@ -86,33 +76,20 @@
     </el-card>
 
     <!-- 確認ダイアログ -->
-    <el-dialog
-      v-model="isClickedUpdateTemplate"
-      title="テンプレート更新"
-      width="72%"
-      center
+    <dialog-component
+      v-model:dialog="dialogVisible"
+      :contents="dialogContents"
+      @click="onClickConfirm"
     >
       <span>この内容でテンプレートを更新します。よろしいですか？</span>
-
-      <inputCard v-model:form="form" :disabled="true" class="edit__card">
+      <card-component v-model:form="form" :disabled="true" class="edit__card">
         <template v-slot:header>
           <div>
             <span> {{ form.name.templateName }} </span>
           </div>
         </template>
-      </inputCard>
-
-      <template #footer>
-        <span>
-          <el-button @click="isClickedUpdateTemplate = false"
-            >キャンセル</el-button
-          >
-          <el-button type="primary" @click="onClickConfirm"
-            >テンプレート更新</el-button
-          >
-        </span>
-      </template>
-    </el-dialog>
+      </card-component>
+    </dialog-component>
 
     <div class="edit__back-button">
       <router-link to="/">
@@ -123,25 +100,30 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 
-import inputCard from "../components/inputCard.vue";
+import CardComponent from "../components/CardComponent.vue";
+import dialogComponent from "../components/dialogComponent.vue";
+
+const dialogVisible = ref(false);
+const dialogContents = reactive({
+  title: "テンプレート更新",
+  cancelButton: "キャンセル",
+  confirmButton: "更新する",
+});
 
 const router = useRouter();
 const route = useRoute();
-const store = useStore();
-
-const isClickedUpdateTemplate = ref(false);
-
 const { id } = route.params;
 
+const store = useStore();
 // 更新可能にするため computed は使わない
 const form = store.state.template[id];
 
-const onClickAddingForm = () => {
+const onClickAdd = () => {
   const additionalContents = {
     label: "",
     type: "",
@@ -150,12 +132,12 @@ const onClickAddingForm = () => {
   form.contents.push(additionalContents);
 };
 
-const onClickUpdateTemplate = () => {
-  isClickedUpdateTemplate.value = true;
+const onClickUpdate = () => {
+  dialogVisible.value = true;
 };
 
 const onClickConfirm = () => {
-  isClickedUpdateTemplate.value = false;
+  dialogVisible.value = false;
   const updateItem = { index: id, form: form };
   store.dispatch("updateTemplate", updateItem);
   router.push("/");
@@ -164,14 +146,8 @@ const onClickConfirm = () => {
 
 <style lang="scss" scoped>
 .edit {
-  text-align: center;
-
   &__card {
     margin: 24px 0;
-
-    &__header {
-      width: 100%;
-    }
 
     &__contents {
       width: 100%;
@@ -181,8 +157,6 @@ const onClickConfirm = () => {
       flex-wrap: wrap;
 
       &__item {
-        // width: 30%;
-        // flex-grow: 1;
         margin-right: 12px;
 
         &__label {
@@ -210,6 +184,23 @@ const onClickConfirm = () => {
       }
       &--edit-template {
         align-items: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .edit {
+    &__card {
+      &__contents {
+        &__item {
+          &__label {
+            width: 100%;
+          }
+          &__type {
+            width: 100%;
+          }
+        }
       }
     }
   }

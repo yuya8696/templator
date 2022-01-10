@@ -27,9 +27,19 @@ body {
   }
   &__main {
     margin: 0 20%;
+    text-align: center;
   }
   &__footer {
     height: 4vh;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .app {
+    &__main {
+      margin: 0 8px;
+      text-align: center;
+    }
   }
 }
 </style>

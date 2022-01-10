@@ -59,30 +59,24 @@
             placeholder="選択肢を入力してください"
             class="create__card__contents__item__options__select-box"
           >
-            <el-option
-              v-for="item in item.options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
+            <template #empty></template>
           </el-select>
         </el-form-item>
       </el-form>
 
       <div class="create__card__button">
         <el-button
-          class="create__card__button--add-form"
-          type="primary"
           plain
-          @click="onClickAddingForm"
+          class="create__card__button--add-form"
+          @click="onClickAdd"
         >
           質問の追加
         </el-button>
         <el-button
+          plain
           class="create__card--button--create-template"
           type="primary"
-          @click="onClickCreateTemplate"
+          @click="onClickCreate"
         >
           テンプレート生成
         </el-button>
@@ -96,33 +90,20 @@
     </div>
 
     <!-- 確認ダイアログ -->
-    <el-dialog
-      v-model="isClickedCreateTemplate"
-      title="テンプレート作成"
-      width="72%"
-      center
+    <dialog-component
+      v-model:dialog="dialogVisible"
+      :contents="dialogContents"
+      @click="onClickConfirm"
     >
       <span>この内容でテンプレートを作成します。よろしいですか？</span>
-
-      <inputCard v-model:form="form" :disabled="true" class="create__card">
+      <input-card v-model:form="form" :disabled="true" class="create__card">
         <template v-slot:header>
           <div>
             <span> {{ form.name.templateName }} </span>
           </div>
         </template>
-      </inputCard>
-
-      <template #footer>
-        <span>
-          <el-button @click="isClickedCreateTemplate = false"
-            >キャンセル</el-button
-          >
-          <el-button type="primary" @click="onClickConfirm"
-            >テンプレート作成</el-button
-          >
-        </span>
-      </template>
-    </el-dialog>
+      </input-card>
+    </dialog-component>
   </section>
 </template>
 
@@ -132,7 +113,15 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
-import inputCard from "../components/inputCard.vue";
+import inputCard from "../components/CardComponent.vue";
+import dialogComponent from "../components/dialogComponent.vue";
+
+const dialogVisible = ref(false);
+const dialogContents = reactive({
+  title: "テンプレート作成",
+  cancelButton: "キャンセル",
+  confirmButton: "作成する",
+});
 
 const router = useRouter();
 const store = useStore();
@@ -151,9 +140,7 @@ const form = reactive({
   ],
 });
 
-const isClickedCreateTemplate = ref(false);
-
-const onClickAddingForm = () => {
+const onClickAdd = () => {
   const additionalContents = {
     label: "",
     type: "",
@@ -162,12 +149,12 @@ const onClickAddingForm = () => {
   form.contents.push(additionalContents);
 };
 
-const onClickCreateTemplate = () => {
-  isClickedCreateTemplate.value = true;
+const onClickCreate = () => {
+  dialogVisible.value = true;
 };
 
 const onClickConfirm = () => {
-  isClickedCreateTemplate.value = false;
+  dialogVisible.value = false;
   store.dispatch("createTemplate", form);
   router.push("/");
 };
@@ -175,14 +162,8 @@ const onClickConfirm = () => {
 
 <style lang="scss" scoped>
 .create {
-  text-align: center;
-
   &__card {
     margin: 24px 0;
-
-    &__header {
-      width: 100%;
-    }
 
     &__contents {
       width: 100%;
@@ -219,6 +200,23 @@ const onClickConfirm = () => {
       }
       &--create-template {
         align-items: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .create {
+    &__card {
+      &__contents {
+        &__item {
+          &__label {
+            width: 100%;
+          }
+          &__type {
+            width: 100%;
+          }
+        }
       }
     }
   }
