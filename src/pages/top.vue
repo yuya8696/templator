@@ -85,11 +85,12 @@ import { ref, computed, reactive } from "vue";
 import { Edit } from "@element-plus/icons-vue";
 import { Delete } from "@element-plus/icons-vue";
 import { InfoFilled } from "@element-plus/icons-vue";
+import { ElMessage } from "element-plus";
 
 import { useStore } from "vuex";
 
 import CardComponent from "../components/CardComponent.vue";
-import dialogComponent from "../components/DialogComponent.vue";
+import DialogComponent from "../components/DialogComponent.vue";
 
 const dialogVisible = ref(false);
 const dialogTextarea = ref("");
@@ -135,7 +136,10 @@ const onClickCopy = () => {
   if (navigator.clipboard) {
     navigator.clipboard.writeText(dialogTextarea.value);
   }
-  dialogVisible.value = false;
+  ElMessage({
+    message: "コピーしました！",
+    type: "success",
+  });
 };
 </script>
 
