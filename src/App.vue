@@ -14,7 +14,8 @@
 
 <style lang="scss">
 body {
-  margin: 0;
+  font-family: "Century Gothic", sans-serif;
+  margin: 40px 0 0 0;
 }
 .app {
   &__header {
