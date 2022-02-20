@@ -5,6 +5,7 @@
     </template>
     <div class="card-component__contents">
       <el-form
+        @submit.prevent
         v-for="(item, index) in form.contents"
         :key="index"
         label-width="180px"

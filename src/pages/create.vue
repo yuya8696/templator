@@ -4,7 +4,11 @@
 
     <el-card class="create__card">
       <template #header>
-        <el-form label-position="top" class="create__card__header">
+        <el-form
+          @submit.prevent
+          label-position="top"
+          class="create__card__header"
+        >
           <el-form-item label="テンプレート名">
             <el-input
               v-model="form.name.templateName"
@@ -17,6 +21,7 @@
 
       <!-- 質問項目 -->
       <el-form
+        @submit.prevent
         v-for="(item, index) in form.contents"
         :key="index"
         label-position="top"
@@ -24,17 +29,13 @@
       >
         <el-form-item
           :label="'項目' + (index + 1)"
-          class="
-            create__card__contents__item create__card__contents__item__label
-          "
+          class="create__card__contents__item create__card__contents__item__label"
         >
           <el-input v-model="item.label"> </el-input>
         </el-form-item>
         <el-form-item
           :label="'項目' + (index + 1) + 'のタイプ'"
-          class="
-            create__card__contents__item create__card__contents__item__type
-          "
+          class="create__card__contents__item create__card__contents__item__type"
         >
           <el-select v-model="item.type" placeholder="項目のタイプ">
             <el-option label="見出し" value="heading"></el-option>

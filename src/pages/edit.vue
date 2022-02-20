@@ -4,7 +4,11 @@
 
     <el-card class="edit__card">
       <template #header>
-        <el-form label-position="top" class="edit__card__header">
+        <el-form
+          @submit.prevent
+          label-position="top"
+          class="edit__card__header"
+        >
           <el-form-item label="テンプレート名">
             <el-input
               v-model="form.name.templateName"
@@ -17,6 +21,7 @@
 
       <!-- 質問項目 -->
       <el-form
+        @submit.prevent
         v-for="(item, index) in form.contents"
         :key="index"
         label-position="top"
