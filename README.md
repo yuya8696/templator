@@ -24,6 +24,7 @@ $ yarn preview
 ## Technology stack
 - Vue 3.0
 - Vuex 4
+- Vue router 4
 - Vite
 - Scss
 - Element Plus
